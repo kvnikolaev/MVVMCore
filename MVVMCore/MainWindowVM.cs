@@ -93,20 +93,14 @@ namespace MVVMCore
 
         private void RefreshAll_Execute(object parameter)
         {
-             var loadButtons = FindVisualChildren<Button>(_mainWindow.TaskContainer).ToList();
-
-            //if (loadButtons != null)
-            //{
-            //    foreach (var button in loadButtons)
-            //    {
-            //        //button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-            //        button.Command.Execute(null);
-            //    }
-            //}
+            var loadButtons = FindVisualChildren<Button>(_mainWindow.TaskContainer).ToList();
 
             for (int i = 0; i < loadButtons.Count(); i++)
             {
-                loadButtons[i].Command.Execute(LoadingControls[i]);
+                if (loadButtons[i].Command.CanExecute(null))
+                {
+                    loadButtons[i].Command.Execute(loadButtons[i].DataContext);
+                }
             }
         }
 

@@ -27,16 +27,6 @@
                     </Storyboard>
                   </BeginStoryboard>
                 </EventTrigger>
-                <!--<DataTrigger Binding="{Binding IsBusy}" Value="True">  анимация не синхронизирована
-                  <DataTrigger.EnterActions>
-                    <BeginStoryboard>
-                      <Storyboard>
-                        <DoubleAnimation Storyboard.TargetProperty="(Image.RenderTransform).(Angle)"
-                                       From="0" To="360" Duration="00:00:01.000" RepeatBehavior="Forever"/>
-                      </Storyboard>
-                    </BeginStoryboard>
-                  </DataTrigger.EnterActions>
-                </DataTrigger>-->
                 <DataTrigger Binding="{Binding IsBusy}" Value="True">
                   <Setter Property="Visibility" Value="Visible"/>
                 </DataTrigger>
@@ -45,13 +35,35 @@
           </Image.Style>
         </Image>
         <FrameworkElement Width="20"/>
-        <Button Command="{Binding RelativeSource={RelativeSource AncestorType=local:MainWindow}, Path=DataContext.LoadEmulationCommand}"
+        <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Path=DataContext.LoadEmulationCommand}"
                 CommandParameter="{Binding }"
                 IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}" Width="170" Height="25" >
           <TextBlock Text="{Binding }"/>
         </Button>
       </StackPanel>
     </DataTemplate>
+
+    <!-- TaskContainer -->
+    <Style x:Key="TaskContainer_ItemContainerStyle" TargetType="{x:Type ListBoxItem}">
+      <Setter Property="SnapsToDevicePixels" Value="True"/>
+      <Setter Property="Padding" Value="4,1"/>
+      <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+      <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ListBoxItem}">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+              <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    
   </Window.Resources>
   <Canvas>
     <StackPanel Orientation="Horizontal" Canvas.Top="150" Canvas.Left="250">
@@ -91,17 +103,20 @@
 
     <Button Height="30" Width="40" Canvas.Left="295" Canvas.Top="187"
             Command="{Binding RefreshAllCommand}"/>
-    <ScrollViewer Canvas.Left="295" Canvas.Top="217" Height="350" VerticalScrollBarVisibility="Auto">
-      <ItemsControl x:Name="TaskContainer"
-                    ItemsSource="{Binding LoadingControls}"
-                    ItemTemplate="{StaticResource LoadingButtonTemplate}">
-        <!--<ItemsControl.ItemsPanel>
+    <!--<ScrollViewer Canvas.Left="295" Canvas.Top="217" Height="350" VerticalScrollBarVisibility="Auto">-->
+    <ListBox x:Name="TaskContainer" Canvas.Left="295" Canvas.Top="217" Height="350" 
+             ItemsSource="{Binding LoadingControls}"
+             ItemTemplate="{StaticResource LoadingButtonTemplate}"
+             ItemContainerStyle="{DynamicResource TaskContainer_ItemContainerStyle}" >
+      <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
-          <StackPanel Orientation="Vertical" ScrollViewer.VerticalScrollBarVisibility="Visible" Height="200"/>
+          <StackPanel/> <!-- By default Virtualization Panel which block RefreshAllCommand -->
         </ItemsPanelTemplate>
-      </ItemsControl.ItemsPanel>-->
-      </ItemsControl>
-    </ScrollViewer>
+      </ListBox.ItemsPanel>
+
+
+    </ListBox>
+    <!--</ScrollViewer>-->
 
     <Button Canvas.Left="712" Canvas.Top="42" Height="40" Width="40"
             Command="{Binding OpenChildWindowCommand}"/>
