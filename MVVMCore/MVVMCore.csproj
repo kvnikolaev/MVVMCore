@@ -9,9 +9,11 @@
 
   <ItemGroup>
     <None Remove="Images\circle.png" />
+    <None Remove="Images\onhold.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TaskSchedulerWithPriority\TaskSchedulerWithPriority.csproj" />
     <ProjectReference Include="..\WpfElements\WpfElements.csproj" />
   </ItemGroup>
 
@@ -19,6 +21,7 @@
     <Resource Include="Images\circle.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\onhold.png" />
   </ItemGroup>
 
 </Project>

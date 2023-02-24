@@ -12,8 +12,11 @@
       <wpfElemets:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>
 
       <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-      
 
+
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ResourceDictionary.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Application.Resources>
 

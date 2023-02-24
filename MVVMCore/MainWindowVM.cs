@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
+using TaskSchedulerWithPriority;
+
 namespace MVVMCore
 {
     internal class MainWindowVM : CoreVM
@@ -50,7 +52,7 @@ namespace MVVMCore
 
         private void ChangeTitle_Execute(object parameter)
         {
-            Task.Run(() =>
+            TaskWithPriority.RunWithPriority(() =>
             {
                 IsBusy = true;
                 var t = Application.Current.Dispatcher.CheckAccess();
@@ -63,12 +65,12 @@ namespace MVVMCore
 
                 TitleButtonText = _titleTemplate + " x" + _titleCounter;
                 IsBusy = false;
-            });
+            }, lowPriority: false);
         }
 
         private bool ChangeTitle_CanExecute(object parameter)
         {
-            return true;// !_isBusy;
+            return !_isBusy;
         }
 
 
@@ -93,7 +95,7 @@ namespace MVVMCore
 
         private void RefreshAll_Execute(object parameter)
         {
-            var loadButtons = FindVisualChildren<Button>(_mainWindow.TaskContainer).ToList();
+            var loadButtons = VisualTreeFinder.FindVisualChildren<Button>(_mainWindow.TaskContainer).ToList();
 
             for (int i = 0; i < loadButtons.Count(); i++)
             {
@@ -109,28 +111,6 @@ namespace MVVMCore
             return true;
         }
 
-        private static IEnumerable<T> FindVisualChildren<T>(DependencyObject dependencyObject) where T : DependencyObject
-        {
-            if (dependencyObject != null)
-            {
-                var count1 = VisualTreeHelper.GetChildrenCount(dependencyObject);
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(dependencyObject); i++)
-                {
-                    var child = VisualTreeHelper.GetChild(dependencyObject, i);
-                    if (child is T) // != null
-                    {
-                        yield return (T)child;
-                    }
-
-                    foreach (T subChild in FindVisualChildren<T>(child))
-                    {
-                        yield return subChild;
-                    }
-
-                }
-            }
-        }
-
 
         private RelayCommand _loadEmulationCommand;
         public RelayCommand LoadEmulationCommand => _loadEmulationCommand ?? (_loadEmulationCommand = new RelayCommand(LoadEmulation_Execute, LoadEmulation_CanExecute));
@@ -139,14 +119,15 @@ namespace MVVMCore
         {
             if (parameter is LoadingControlVM lc)
             {
-                Task.Run(() =>
+                lc.IsOnHold = true;
+                TaskWithPriority.RunWithPriority(() =>
                 {
                     lc.IsBusy = true;
                     Thread.Sleep(2000);
                     lc.IsBusy = false;
-                });
+                },
+                lowPriority: true);
             }
-
         }
 
         private bool LoadEmulation_CanExecute(object parameter)
@@ -163,7 +144,7 @@ namespace MVVMCore
 
         private void OpenChildWindow_Execute(object parameter)
         {
-            Task.Run(() =>
+            TaskWithPriority.RunWithPriority(() =>
             {
 
                 var t = Application.Current.Dispatcher.CheckAccess();
@@ -186,7 +167,7 @@ namespace MVVMCore
                     };
                     window.Show();
                 });
-            });
+            }, lowPriority: false);
         }
 
         private bool OpenChildWindow_CanExecute(object parameter)
