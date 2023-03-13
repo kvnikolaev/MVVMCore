@@ -10,8 +10,8 @@
     <DataTemplate x:Key="LoadingButtonTemplate">
       <StackPanel Orientation="Horizontal">
         <Image x:Name="SpinImage"
-             Source="pack://application:,,,/Images/circle.png" Width="20" RenderOptions.BitmapScalingMode="HighQuality"
-             RenderTransformOrigin="0.5,0.5">
+               Width="20" 
+               RenderOptions.BitmapScalingMode="HighQuality" RenderTransformOrigin="0.5,0.5">
           <Image.RenderTransform>
             <RotateTransform x:Name="ImageRotateTransform" Angle="0"/>
           </Image.RenderTransform>
@@ -19,29 +19,51 @@
             <Style TargetType="Image">
               <Setter Property="Visibility" Value="Hidden"/>
               <Style.Triggers>
-                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-                  <BeginStoryboard>
-                    <Storyboard>
-                      <DoubleAnimation Storyboard.TargetProperty="(Image.RenderTransform).(Angle)"
-                                       From="0" To="360" Duration="00:00:01.000" RepeatBehavior="Forever"/>
-                    </Storyboard>
-                  </BeginStoryboard>
-                </EventTrigger>
                 <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                  <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                      <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="(Image.RenderTransform).(Angle)"
+                                       From="0" To="360" Duration="00:00:01.000" RepeatBehavior="Forever"/>
+                      </Storyboard>
+                    </BeginStoryboard>
+                  </DataTrigger.EnterActions>
+                  <Setter Property="Source" Value="pack://application:,,,/Images/circle.png"/>
                   <Setter Property="Visibility" Value="Visible"/>
                 </DataTrigger>
-                <!--<DataTrigger Binding="{Binding IsOnHold}" Value="True"> --><!-- !!--><!--
+                <DataTrigger Binding="{Binding IsOnHold}" Value="True">
                   <Setter Property="Source" Value="pack://application:,,,/Images/onhold.png"/>
-                  <Setter Property="Width" Value="20"/>
-                </DataTrigger>-->
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
               </Style.Triggers>
             </Style>
           </Image.Style>
         </Image>
+        <!--<Image Source="pack://application:,,,/Images/onhold.png" Width="20" RenderOptions.BitmapScalingMode="HighQuality">
+          <Image.Style>
+            <Style TargetType="Image">
+              <Setter Property="Visibility" Value="Collapsed"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsOnHold}" Value="True">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Image.Style>
+        </Image>-->
         <FrameworkElement Width="20"/>
         <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}, Path=DataContext.LoadEmulationCommand}"
                 CommandParameter="{Binding }"
-                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}" Width="170" Height="25" >
+                Width="170" Height="25"
+                >
+          <!--IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"-->
+          <Button.IsEnabled>
+            <MultiBinding Converter="{StaticResource MultiBoolConverter}"
+                          ConverterParameter="XOR">
+              <Binding Path="IsBusy"/>
+              <Binding Path="IsOnHold"/>
+            </MultiBinding>
+          </Button.IsEnabled>
           <TextBlock Text="{Binding }"/>
         </Button>
       </StackPanel>

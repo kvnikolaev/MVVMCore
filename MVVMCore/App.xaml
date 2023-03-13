@@ -2,14 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MVVMCore"
-             xmlns:wpfElemets="clr-namespace:WpfElements;assembly=WpfElements"
+             xmlns:wpfElements="clr-namespace:WpfElements;assembly=WpfElements"
              Startup="Application_Startup"
              ShutdownMode="OnMainWindowClose">
   <Application.Resources>
     <ResourceDictionary>
 
-      <wpfElemets:InvertBoolConverter x:Key="InvertBoolConverter"/>
-      <wpfElemets:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>
+      <wpfElements:InvertBoolConverter x:Key="InvertBoolConverter"/>
+      <wpfElements:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>
+      <wpfElements:MultiBoolConverter x:Key="MultiBoolConverter"/>
 
       <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
