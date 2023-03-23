@@ -25,7 +25,7 @@ namespace TaskSchedulerWithPriority
 
         protected override IEnumerable<Task> GetScheduledTasks()
         {
-            return _normalPriorityTasks.ToArray().Concat(_lowPriorityTasks.ToArray());
+            return _normalPriorityTasks.ToArray().Concat(_lowPriorityTasks.ToArray()); 
         }
 
         private readonly object locker = new object();
@@ -75,6 +75,7 @@ namespace TaskSchedulerWithPriority
                             else
                             {
                                 _tasksQueued--;
+                                if (_tasksQueued == 0) QueueGotEmpty?.Invoke();
                                 break;
                             }
                         }
@@ -90,6 +91,15 @@ namespace TaskSchedulerWithPriority
             return false; // we might not want to execute task that should schedule as high or low priority inline
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static TaskScheduler Scheduler => _scheduler;
+
+        public delegate void ScheduleHandler();
+        /// <summary>
+        /// Invoke when scheduler queue get empty
+        /// </summary>
+        public static event ScheduleHandler QueueGotEmpty; 
     }
 }

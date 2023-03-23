@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using MVVMCore.Controls;
 
 using TaskSchedulerWithPriority;
 
@@ -19,10 +20,12 @@ namespace MVVMCore
     {
         MainWindow _mainWindow;
 
-        public string Title { get; set; } = "";
+        public string Title { get; set; } = "Priority Task Container Demo";
 
-        private string _titleText = "";
-        public string TitleButtonText { get => _titleText; set { _titleText = value; OnPropertyChanged(); } }
+
+        
+        private string _titleButtonText = "";
+        public string TitleButtonText { get => _titleButtonText; set { _titleButtonText = value; OnPropertyChanged(); } }
 
         private bool _isBusy = false;
         public bool IsBusy { get => _isBusy; set => SetField(ref _isBusy, value); }
@@ -55,9 +58,6 @@ namespace MVVMCore
             TaskWithPriority.RunWithPriority(() =>
             {
                 IsBusy = true;
-                var t = Application.Current.Dispatcher.CheckAccess();
-                Application.Current.Dispatcher.Invoke(() => CommandManager.InvalidateRequerySuggested())
-                ;
                 Thread.Sleep(1500);
                 _titleCounter++;
                 Title = _titleTemplate + " x" + _titleCounter;
@@ -78,15 +78,25 @@ namespace MVVMCore
 
         private int _taskAmount = 100;
 
-        public LoadingControlVM[] LoadingControls { get; set; }
+        public LoadingControls LoadingControls { get; set; }
 
         private void InitializeTaskOverload()
         {
-            LoadingControls = new LoadingControlVM[_taskAmount];
-            for (int i = 0; i < LoadingControls.Length; i++)
+            // Все таски будут выполнять одну работы
+            Action<LoadingControlVM> anonymMethod = (lc) =>
             {
-                LoadingControls[i] = new LoadingControlVM() { Text = i.ToString(), IsBusy = false };
+                lc.IsBusy = true;
+                Thread.Sleep(1200);
+                lc.IsBusy = false;
+            };
+
+            LoadingControls = new LoadingControls();
+            for (int i = 0; i < _taskAmount; i++) 
+            {
+                LoadingControls.AddLoadingControl(new LoadingControlVM { Index = i, Text = i.ToString(), Action = anonymMethod });
             }
+
+            
         }
 
 
@@ -95,20 +105,12 @@ namespace MVVMCore
 
         private void RefreshAll_Execute(object parameter)
         {
-            var loadButtons = VisualTreeFinder.FindVisualChildren<Button>(_mainWindow.TaskContainer).ToList();
-
-            for (int i = 0; i < loadButtons.Count(); i++)
-            {
-                if (loadButtons[i].Command.CanExecute(null))
-                {
-                    loadButtons[i].Command.Execute(loadButtons[i].DataContext);
-                }
-            }
+            LoadingControls.RunAll();
         }
 
         private bool RefreshAll_CanExecute(object parameter)
         {
-            return true;
+            return LoadingControls.AllDone;
         }
 
 
@@ -119,14 +121,17 @@ namespace MVVMCore
         {
             if (parameter is LoadingControlVM lc)
             {
-                lc.IsOnHold = true;
-                TaskWithPriority.RunWithPriority(() =>
-                {
-                    lc.IsBusy = true;
-                    Thread.Sleep(2000);
-                    lc.IsBusy = false;
-                },
-                lowPriority: true);
+                LoadingControls.Run(lc.Index);
+
+
+                //lc.IsOnHold = true;
+                //TaskWithPriority.RunWithPriority(() =>
+                //{
+                //    lc.IsBusy = true;
+                //    Thread.Sleep(2000);
+                //    lc.IsBusy = false;
+                //},
+                //lowPriority: true);
             }
         }
 

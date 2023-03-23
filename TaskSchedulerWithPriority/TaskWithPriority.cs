@@ -9,6 +9,7 @@ namespace TaskSchedulerWithPriority
     public class TaskWithPriority : Task
     {
         public bool LowPriority { get; set; }
+        public bool IsOnHold { get; private set; }
         internal System.Threading.Tasks.TaskScheduler _taskSheduler;
 
         public TaskWithPriority(Action action, bool lowPriority) : base(action)
@@ -27,7 +28,19 @@ namespace TaskSchedulerWithPriority
         public void StartWithPriority(bool lowPriority = false)
         {
             this.LowPriority = lowPriority;
+            //!! this.IsOnHold = true;
+            this.Start(_taskSheduler);
+            //!! this.IsOnHold = false;
+        }
+
+        public void StartWithPriority()
+        {
             this.Start(_taskSheduler);
         }
+
+        //!!public static TaskFactory Factory
+        //{
+        //    get => ??
+        //}
     }
 }

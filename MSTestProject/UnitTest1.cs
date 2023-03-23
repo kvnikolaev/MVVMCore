@@ -12,7 +12,7 @@ namespace MSTestProject
     public class UnitTest1
     {
         [TestMethod]
-        public void DefaulSchedulerTimeOut()
+        public void TimeOutDefaulScheduler()
         {
             var timer = Stopwatch.StartNew();
             List<Task> tasks = new List<Task>();
@@ -32,7 +32,7 @@ namespace MSTestProject
         }
 
         [TestMethod]
-        public void PrioritySchedulerTimeOut_Run()
+        public void TimeOutPriorityScheduler_Run()
         {
             var timer = Stopwatch.StartNew();
             List<TaskWithPriority> tasks = new List<TaskWithPriority>();
@@ -52,7 +52,7 @@ namespace MSTestProject
         }
 
         [TestMethod]
-        public void PrioritySchedulerTimeOut_Start()
+        public void TimeOutPriorityScheduler_Start()
         {
             var timer = Stopwatch.StartNew();
             List<TaskWithPriority> tasks = new List<TaskWithPriority>();
@@ -72,6 +72,43 @@ namespace MSTestProject
             t2.StartWithPriority(false);
             tasks.Add(t2);
             Task.WaitAll(tasks.ToArray());
+        }
+
+        volatile int actualValue = 0;
+        //volatile bool result = false;
+        [TestMethod]
+        public void OnQueueGotEmpty_Event()
+        {
+            // Arrange
+            int expectedValue = 10;
+            bool result = false;
+            
+            TaskSchedulerWithPriority.TaskSchedulerWithPriority.ScheduleHandler assertMethod = () =>
+            {
+                // Assert
+                result = expectedValue == actualValue;
+            };
+            TaskSchedulerWithPriority.TaskSchedulerWithPriority.QueueGotEmpty += assertMethod;
+
+            // Act
+            var timer = Stopwatch.StartNew();
+            List<TaskWithPriority> tasks = new List<TaskWithPriority>();
+            for (int i = 0; i < expectedValue - 1; i++)
+            {
+                var t = new TaskWithPriority(() => 
+                { 
+                    Thread.Sleep(500); 
+                    actualValue++; 
+                }, lowPriority: true);
+                t.StartWithPriority();
+                tasks.Add(t);
+            }
+            var t2 = new TaskWithPriority(() => { Thread.Sleep(1500); actualValue++; }, lowPriority: true);
+            var taskId = t2.Id;
+            t2.StartWithPriority();
+            tasks.Add(t2);
+            Task.WaitAll(tasks.ToArray());
+            Assert.AreEqual(result, true);
         }
 
     }

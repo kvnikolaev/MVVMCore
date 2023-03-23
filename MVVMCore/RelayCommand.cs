@@ -18,11 +18,11 @@ namespace MVVMCore
             this._canExecute = canExecute;
         }
 
-        public event EventHandler? CanExecuteChanged; //TODO
-        //{
-        //    //add { CommandManager.RequerySuggested += value; }
-        //    //remove { CommandManager.RequerySuggested -= value; }
-        //}
+        public event EventHandler? CanExecuteChanged //!!TODO
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         public void Execute(object? parameter)
         {

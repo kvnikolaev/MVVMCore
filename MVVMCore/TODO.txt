@@ -1,0 +1,4 @@
+﻿1) Автоматизация изменения состояния LoadingControl (IsBusy, IsOnHold...)
+2) TaskWithPriority.Factory implementation
+3) CommandManager.InvalidateRequerySuggested() для отдельных комманд
+4) Event в static объекте
