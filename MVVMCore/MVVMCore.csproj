@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\check.png" />
     <None Remove="Images\circle.png" />
+    <None Remove="Images\error.png" />
     <None Remove="Images\onhold.png" />
   </ItemGroup>
 
@@ -18,7 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\check.png" />
     <Resource Include="Images\circle.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\error.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\onhold.png" />

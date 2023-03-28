@@ -85,9 +85,12 @@ namespace MVVMCore
             // Все таски будут выполнять одну работы
             Action<LoadingControlVM> anonymMethod = (lc) =>
             {
-                lc.IsBusy = true;
                 Thread.Sleep(1200);
-                lc.IsBusy = false;
+                int rnd = Random.Shared.Next(1, 4);
+                if (rnd % 3 < 2)
+                    lc.Status = LoadingStatus.OK;
+                else
+                    lc.Status = LoadingStatus.NegativeResult;
             };
 
             LoadingControls = new LoadingControls();

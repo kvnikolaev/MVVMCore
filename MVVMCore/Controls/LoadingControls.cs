@@ -34,9 +34,11 @@ namespace MVVMCore.Controls
 
         public void RunAll()
         {
+            // создаем список таск
             this._loadingTasks.Clear();
             foreach(var loading in _loadingList)
             {
+                loading.Status = LoadingStatus.Unknown;
                 var t = new TaskWithPriority(() => loading.Action(loading), lowPriority: true);
                 t.ContinueWith((task) => OnPropertyChanged(nameof(DoneTasks)));
                 _loadingTasks.Add(t);
@@ -44,11 +46,13 @@ namespace MVVMCore.Controls
                 loading.IsOnHold = true;
             }
 
+            // запускаем таски
             foreach(var task in _loadingTasks)
             {
                 task.StartWithPriority(); 
             }
-
+            
+            // после всех задач обновляем интерфейс
             var endTask = Task.WhenAll(_loadingTasks);
             endTask.ContinueWith((task) => System.Windows.Application.Current.Dispatcher.Invoke(() => CommandManager.InvalidateRequerySuggested()));
         }
@@ -57,7 +61,9 @@ namespace MVVMCore.Controls
         {
             if (loadingControlIndex < 0 || loadingControlIndex >= _loadingList.Count) throw new IndexOutOfRangeException("Индекс вне границ массива");
 
-            TaskWithPriority.Run(() => _loadingList[loadingControlIndex].Action(_loadingList[loadingControlIndex]));
+            _loadingList[loadingControlIndex].Status = LoadingStatus.Unknown;
+            TaskWithPriority.Run(() => _loadingList[loadingControlIndex].Action(_loadingList[loadingControlIndex]))
+                .ContinueWith((task) => OnPropertyChanged(nameof(DoneTasks)));
         }
 
         private bool _allDone;
@@ -73,8 +79,10 @@ namespace MVVMCore.Controls
         }
         
 
-        public int DoneTasks { get => _loadingTasks.Count(task => task.Status == TaskStatus.RanToCompletion); }
+        //public int DoneTasks { get => _loadingTasks.Count(task => task.Status == TaskStatus.RanToCompletion); }
+        ///
+        public int DoneTasks { get => _loadingList.Count(load => load.Status == LoadingStatus.OK); }
 
-        public int ContainTasks { get => _loadingList.Count(); }
+        public int ContainTasks { get => _loadingList.Count; }
     }
 }

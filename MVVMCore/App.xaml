@@ -11,6 +11,7 @@
       <wpfElements:InvertBoolConverter x:Key="InvertBoolConverter"/>
       <wpfElements:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>
       <wpfElements:MultiBoolConverter x:Key="MultiBoolConverter"/>
+      <wpfElements:EnumEqualsParameterConverter x:Key="EnumEqualsParameterConverter"/>
 
       <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 

@@ -12,33 +12,54 @@ namespace MVVMCore
     {
         public int Index { get; set; }
 
+        private LoadingStatus _status;
+        public LoadingStatus Status { get => _status; internal set => SetField(ref _status, value); }
+
         private bool _isOnHold; //!!
         public bool IsOnHold { get => _isOnHold; set => SetField(ref _isOnHold, value); }
 
         private bool _isBusy;
-        public bool IsBusy { get => _isBusy; set { SetField(ref _isBusy, value); IsOnHold = false; } }
-
-        private bool _resultOk; //!!
-        public bool ResultOg { get => _resultOk; set => SetField(ref _resultOk, value); }
-
-        private bool _resultFail; //!!
-        public bool ResultFail { get => _resultFail; set => SetField(ref _resultFail, value); }
-
-        private bool _connectionError; //!!
+        /// <summary>
+        /// Indicates when Action is on going
+        /// </summary>
+        public bool IsBusy { get => _isBusy; private set { SetField(ref _isBusy, value); IsOnHold = false; } }
 
         private string _text;
         public string Text { get => _text; set => SetField(ref _text, value); }
 
         private Action<LoadingControlVM> _action;
-        public Action<LoadingControlVM> Action { get; set; }
-        //public Action<LoadingControlVM> Action { get => _action; set { _action = value; _task = new TaskWithPriority(_action, true); var t = new Task(_action); } }
-
-        private TaskWithPriority _task;
-        public TaskWithPriority Task { get; }
+        public Action<LoadingControlVM> Action { set { _action = value; } get { return GetAction(_action); } }
 
         public override string ToString()
         {
             return Text;
         }
+
+        private Action<LoadingControlVM> GetAction(Action<LoadingControlVM> action)
+        {
+            return (lc) =>
+            {
+                lc.IsBusy = true;
+                try
+                {
+                    action(lc);
+                }
+                catch
+                {
+                    lc.Status = LoadingStatus.Exception;
+                    throw;
+                }
+                lc.IsBusy = false;
+            };
+        }
+    }
+
+    public enum LoadingStatus
+    {
+        Unknown,
+        OK,
+        NegativeResult,
+        Exception,
+        ConnectionError
     }
 }
