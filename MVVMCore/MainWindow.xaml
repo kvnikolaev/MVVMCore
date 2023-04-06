@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVVMCore"
+        xmlns:elements="clr-namespace:WpfElements;assembly=WpfElements"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="650" Width="800">
   <Window.Resources>
@@ -112,34 +113,49 @@
         </Image.Style>
       </Image>
       <FrameworkElement Width="20"/>
-      <Button Command="{Binding ChangeTitleCommand}" IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}" Width="170" Height="25" >
+      <Button Style="{DynamicResource ButtonStyle2}" Command="{Binding ChangeTitleCommand}" IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}" Width="170" Height="25" >
         <TextBlock Text="{Binding TitleButtonText}"/>
       </Button>
     </StackPanel>
 
 
-    <Button Height="30" Width="40" Canvas.Left="295" Canvas.Top="187"
-            Command="{Binding RefreshAllCommand}"
-            IsEnabled="{Binding LoadingControls.AllDone}"/>
-    <TextBlock Canvas.Left="417" Canvas.Top="201" Foreground="Gray">
-      <Run Text="{Binding LoadingControls.DoneTasks, Mode=OneWay}"/>
-      /
-      <Run Text="{Binding LoadingControls.ContainTasks, Mode=OneWay}"/>
-    </TextBlock>
-    <ListBox x:Name="TaskContainer" Canvas.Left="295" Canvas.Top="217" Height="350" 
+    <Grid Canvas.Left="295" Canvas.Top="187">
+      <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+      <!-- Refresh button -->
+      <Button Height="30" Width="30" Grid.Row="0" HorizontalAlignment="Left" Margin="0,0,0,1"
+              Style="{DynamicResource TaskContainer_RefreshButton}"
+              Command="{Binding RefreshAllCommand}"
+              IsEnabled="{Binding LoadingControls.AllDone}"
+              SnapsToDevicePixels="True">
+        <elements:AutoGrayImage Source="pack://application:,,,/Images/refresh.png" RenderOptions.BitmapScalingMode="HighQuality" 
+              Margin="5"/>
+      </Button>
+      <!-- Counter -->
+      <TextBlock Canvas.Left="417" Canvas.Top="201" Foreground="Gray" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <Run Text="{Binding LoadingControls.DoneTasks, Mode=OneWay}"/>
+        /
+        <Run Text="{Binding LoadingControls.ContainTasks, Mode=OneWay}"/>
+      </TextBlock>
+      <!-- Task list -->
+      <ListBox x:Name="TaskContainer" Canvas.Left="295" Canvas.Top="217" Height="350" Grid.Row="1"
              ItemsSource="{Binding LoadingControls}"
              ItemTemplate="{StaticResource LoadingButton_Template}"
              ItemContainerStyle="{DynamicResource TaskContainer_ItemContainerStyle}" >
-      <ListBox.ItemsPanel>
-        <ItemsPanelTemplate>
-          <StackPanel IsEnabled="{Binding LoadingControls.AllDone}"/> <!-- By default Virtualization Panel which block RefreshAllCommand -->
-        </ItemsPanelTemplate>
-      </ListBox.ItemsPanel>
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel IsEnabled="{Binding LoadingControls.AllDone}"/> <!-- By default Virtualization Panel which block RefreshAllCommand -->
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+      </ListBox>
+    </Grid>
 
 
-    </ListBox>
-
-    <Button Canvas.Left="712" Canvas.Top="42" Height="40" Width="40"
-            Command="{Binding OpenChildWindowCommand}"/>
+    <Button Style="{DynamicResource ButtonStyle1}" Canvas.Left="712" Canvas.Top="42" Height="40" Width="40"
+            Command="{Binding OpenChildWindowCommand}">
+      Open Window Button
+    </Button>
   </Canvas>
 </Window>

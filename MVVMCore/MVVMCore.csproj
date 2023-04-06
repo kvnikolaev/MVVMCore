@@ -12,6 +12,7 @@
     <None Remove="Images\circle.png" />
     <None Remove="Images\error.png" />
     <None Remove="Images\onhold.png" />
+    <None Remove="Images\refresh.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\onhold.png" />
+    <Resource Include="Images\refresh.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

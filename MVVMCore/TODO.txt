@@ -2,10 +2,9 @@
 2) TaskWithPriority.Factory implementation
 3) CommandManager.InvalidateRequerySuggested() для отдельных комманд
 4) Event в static объекте
-5) когда вызывается ConvertBack
+-) когда вызывается ConvertBack? - When a value propagates from the binding target to the binding source
 6) в каком потоке запускается ContinueWith
 
 TaskContainer:
-1) круглая кнопка
-2) расположение счетчика
+
 3) в отдельную библиотеку?
