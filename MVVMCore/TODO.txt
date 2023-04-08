@@ -4,6 +4,7 @@
 4) Event в static объекте
 -) когда вызывается ConvertBack? - When a value propagates from the binding target to the binding source
 6) в каком потоке запускается ContinueWith
+7) как работают кривые Безье и как из них сделать squircle
 
 TaskContainer:
 
