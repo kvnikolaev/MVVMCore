@@ -83,7 +83,7 @@
 
 
   </Window.Resources>
-  <Canvas>
+    <Canvas>
     <StackPanel Orientation="Horizontal" Canvas.Top="150" Canvas.Left="250">
       <Image x:Name="SpinImage"
              Source="pack://application:,,,/Images/circle.png" Width="20" RenderOptions.BitmapScalingMode="HighQuality"
@@ -118,17 +118,6 @@
       </Button>
     </StackPanel>
 
-    <!--<Path Stroke="Red">
-      <Path.Data>
-        <PathGeometry Figures="M 0,150
-    C 0,0 0,0 250,0
-      500,0 500,0 500,150
-      500,300 500,300 250,300
-      0,300 0,300 0,150" />
-      </Path.Data>
-    </Path>-->
-    <!-- M 0, 62.980000000000004C 0, 31.490000000000002 31.490000000000002, 0 284, 0S 568, 31.490000000000002 568, 62.980000000000004S 536.51, 125.96000000000001 284, 125.96000000000001S 0, 94.47 0, 62.980000000000004 Z -->
-
     <Grid Canvas.Left="295" Canvas.Top="187">
       <Grid.RowDefinitions>
         <RowDefinition/>
@@ -162,10 +151,22 @@
       </ListBox>
     </Grid>
 
-
+    <!-- Open child window -->
     <Button Style="{DynamicResource ButtonStyle1}" Canvas.Left="712" Canvas.Top="42" Height="40" Width="40"
-            Command="{Binding OpenChildWindowCommand}">
-      Open
+            Command="{Binding OpenChildWindowCommand}"
+            Content="{Binding ActionText}">
     </Button>
+
+    <!-- Dialog modalwindow -->
+    
+
+    <elements:DialogPanel Height="100" Width="200" Canvas.Left="400" Canvas.Top="112" 
+                          Background="AliceBlue"
+                          >
+      <Grid  
+          Background="AliceBlue">
+        <Button Height="20" Width="40"/>
+      </Grid>
+    </elements:DialogPanel>
   </Canvas>
 </Window>

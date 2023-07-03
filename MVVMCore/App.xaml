@@ -8,6 +8,8 @@
   <Application.Resources>
     <ResourceDictionary>
 
+      <wpfElements:DialogPanel x:Key="DialogPanel"/>
+
       <wpfElements:InvertBoolConverter x:Key="InvertBoolConverter"/>
       <wpfElements:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>
       <wpfElements:MultiBoolConverter x:Key="MultiBoolConverter"/>

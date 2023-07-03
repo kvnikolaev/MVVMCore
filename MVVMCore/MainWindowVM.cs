@@ -146,6 +146,11 @@ namespace MVVMCore
         #endregion
 
         #region Child Window
+        
+        private Window _childWindow;
+
+        private string _actionText = "Open";
+        public string ActionText { get => _actionText; set => SetField(ref _actionText, value); }
 
         private RelayCommand _openChildWindowCommand;
         public RelayCommand OpenChildWindowCommand => _openChildWindowCommand ?? (_changeTitleCommand = new RelayCommand(OpenChildWindow_Execute, OpenChildWindow_CanExecute));
@@ -154,10 +159,6 @@ namespace MVVMCore
         {
             TaskWithPriority.RunWithPriority(() =>
             {
-
-                var t = Application.Current.Dispatcher.CheckAccess();
-                var t1 = _mainWindow.Dispatcher.CheckAccess();
-
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     var t = Application.Current.Dispatcher.CheckAccess();
@@ -165,15 +166,29 @@ namespace MVVMCore
 
                     var wq = Application.Current.Dispatcher.Equals(_mainWindow.Dispatcher);
 
-                    Window window = new Window()
+                    if (_childWindow == null)
                     {
-                        Width = 300,
-                        Height = 300,
-                        WindowStartupLocation = WindowStartupLocation.Manual,
-                        Left = (_mainWindow.Left + _mainWindow.Width),
-                        Top = (_mainWindow.Top)
-                    };
-                    window.Show();
+                        _childWindow = new Window()
+                        {
+                            Width = 300,
+                            Height = 300,
+                            WindowStartupLocation = WindowStartupLocation.Manual,
+                            Left = (_mainWindow.Left + _mainWindow.Width),
+                            Top = (_mainWindow.Top)
+                        };
+                        _childWindow.Owner = _mainWindow;
+                        _childWindow.Closing += _childWindow_CanceledClosing; ;
+                    }
+                    if (_childWindow.IsVisible)
+                    {
+                        _childWindow.Hide();
+                        ActionText = "Open";
+                    }
+                    else
+                    {
+                        _childWindow.Show();
+                        ActionText = "Close";
+                    }
                 });
             }, lowPriority: false);
         }
@@ -181,6 +196,14 @@ namespace MVVMCore
         private bool OpenChildWindow_CanExecute(object parameter)
         {
             return true;
+        }
+
+
+        private void _childWindow_CanceledClosing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            _childWindow.Hide();
+            ActionText = "Open";   
         }
 
         #endregion

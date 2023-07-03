@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskSchedulerWithPriority",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSTestProject", "MSTestProject\MSTestProject.csproj", "{77A6A976-0E45-4E11-BB5F-FBADEFC97540}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfCustomApplication", "WpfCustomApplication\WpfCustomApplication.csproj", "{D28A3729-7DDD-44CF-8339-9A46EBB55D84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{77A6A976-0E45-4E11-BB5F-FBADEFC97540}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77A6A976-0E45-4E11-BB5F-FBADEFC97540}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77A6A976-0E45-4E11-BB5F-FBADEFC97540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D28A3729-7DDD-44CF-8339-9A46EBB55D84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D28A3729-7DDD-44CF-8339-9A46EBB55D84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D28A3729-7DDD-44CF-8339-9A46EBB55D84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D28A3729-7DDD-44CF-8339-9A46EBB55D84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
