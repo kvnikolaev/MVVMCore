@@ -18,5 +18,10 @@ namespace WpfCustomApplication
             MainWindowVM mainVM = new MainWindowVM();
             mainVM.StartShow();
         }
+
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            //!! e.Handled = true; // исключение обработано
+        }
     }
 }

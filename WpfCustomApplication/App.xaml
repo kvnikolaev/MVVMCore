@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:WpfCustomApplication"
              xmlns:wpfElements="clr-namespace:WpfElements;assembly=WpfElements"
              Startup="Application_Startup"
-             ShutdownMode="OnMainWindowClose">
+             ShutdownMode="OnMainWindowClose"
+             DispatcherUnhandledException="Application_DispatcherUnhandledException">
   <Application.Resources>
     <ResourceDictionary>
       <wpfElements:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>

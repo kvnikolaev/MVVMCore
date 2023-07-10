@@ -21,21 +21,53 @@ namespace WpfCustomApplication
         #region ITabPager
         public ObservableCollection<TabPageVM> AllTabPages { get; set; } = new ObservableCollection<TabPageVM>();
 
+        private TabPageVM _selectedTab;
+        public TabPageVM SelectedTab { get => _selectedTab; set => SetField(ref _selectedTab, value); }
+
         public bool ActivateTabPage(TabPageVM page)
         {
-            throw new NotImplementedException();
+            var tab = this.AllTabPages.FirstOrDefault(x => x == page);
+            if (tab == null) return false;
+
+            this.SelectedTab = tab;
+            return true;
         }
 
         public bool ActivateTabPage(string pageId)
         {
-            throw new NotImplementedException();
+            var tab = this.AllTabPages.FirstOrDefault(x => x.Id == pageId);
+            if (tab == null) return false;
+
+            this.SelectedTab = tab;
+            return true;
         }
 
         public bool AddTabPage(TabPageVM page)
         {
+            if (this.AllTabPages.Any(x => x.Id == page.Id))
+            {
+                //throw new ArgumentException("TabPager уже имеет открытую вкладку с таким Id; Id должны быть уникальными для каждой вкладки", "TabPageVM.Id");
+                return false;
+            }
             this.AllTabPages.Add(page);
             page.TabPager = this;
             return true;
+        }
+
+        public bool AddOrActivateTabPage(TabPageVM page)
+        {
+            if (this.AddTabPage(page)) return true;
+            return ActivateTabPage(page);
+        }
+
+        public bool HighlightTabPage(TabPageVM page)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HighlightTabPage(string pageId)
+        {
+            throw new NotImplementedException();
         }
 
         public bool CloseTabPage(TabPageVM page)
@@ -50,6 +82,6 @@ namespace WpfCustomApplication
             throw new NotImplementedException();
         }
 
-        #endregion 
+        #endregion
     }
 }

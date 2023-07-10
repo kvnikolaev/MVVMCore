@@ -16,17 +16,30 @@ namespace WpfCustomApplication
         /// <summary>
         /// Possibility close in UI
         /// </summary>
-        public bool CanClose { get; set; }
+        public bool CanClose { get; set; } = true;
+
+        public static string TabId { get; set; }
 
         /// <summary>
         /// Unique Id for orientation in UI
         /// </summary>
         public abstract string Id { get; }
 
+        /// <summary>
+        /// Visual notification in UI
+        /// </summary>
+        public bool IsAlarm { get; set; } //!!
+
         private RelayCommand _closeCommand;
         public RelayCommand CloseCommand => _closeCommand ?? (_closeCommand = new RelayCommand(CloseExecuted, (x) => CanClose && CloseCanExecuted(x)));
 
         protected abstract void CloseExecuted(object parameter);
         protected abstract bool CloseCanExecuted(object parameter);
+
+        public enum TabPageClosing //!!
+        {
+            Closable,
+            NotClosable
+        }
     }
 }

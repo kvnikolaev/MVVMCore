@@ -27,9 +27,7 @@ namespace WpfCustomApplication
             }
             else 
             { 
-                _defaultLoginVM = new BaseLoginVM();
-                _window.Content = _defaultLoginVM.View;
-                _defaultLoginVM.OnLogin += DefaultLogin_Login;
+                _window.Content = DefaultLoginVM.View;
             }
 
             _window.Show();
@@ -52,7 +50,7 @@ namespace WpfCustomApplication
 
         private void QuitCommandExecuted(object parameter)
         {
-            _window.Content = _defaultLoginVM.View;
+            _window.Content = DefaultLoginVM.View;
         }
 
         private bool QuitCommandCanExecute(object parameter)
@@ -67,7 +65,14 @@ namespace WpfCustomApplication
         internal MainViewVM MainViewVM => _mainViewVM ?? (_mainViewVM = new MainViewVM());
 
         private BaseLoginVM _defaultLoginVM;
+        private BaseLoginVM DefaultLoginVM => _defaultLoginVM ?? (_defaultLoginVM = InitLoginVM());
 
+        private BaseLoginVM InitLoginVM()
+        {
+            var loginVM = new BaseLoginVM();
+            loginVM.OnLogin += DefaultLogin_Login;
+            return loginVM;
+        }
         #endregion
     }
 }

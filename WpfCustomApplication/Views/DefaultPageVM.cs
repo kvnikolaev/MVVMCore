@@ -14,9 +14,20 @@ namespace WpfCustomApplication
         {
             this.CanClose = canClose;
             this.View = new DefaultPage();
+
+            _defaultPageCounter++;
+            _id = "default" + _defaultPageCounter;
         }
 
-        public override string Id { get => "default"; }
+        private bool _blocked;
+        public bool Blocked { get => _blocked; set => SetField(ref _blocked, value); }
+
+        #region TabPageVM Implementation
+
+        private static int _defaultPageCounter = -1;
+
+        private string _id;
+        public override string Id { get => _id; }
         public override object View { get; protected set; }
         
         private string _title = "Start page";
@@ -34,7 +45,11 @@ namespace WpfCustomApplication
             //    TabPager.ActivatePage(this);
             //    return false;
             //}
-            return true;
+            //return true;
+
+            return !Blocked;
         }
+        #endregion
+
     }
 }

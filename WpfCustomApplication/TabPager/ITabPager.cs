@@ -12,9 +12,15 @@ namespace WpfCustomApplication
     {
         public bool AddTabPage(TabPageVM page);
 
+        public bool AddOrActivateTabPage(TabPageVM page);
+
         public bool ActivateTabPage(TabPageVM page);
 
         public bool ActivateTabPage(string pageId);
+
+        public bool HighlightTabPage(TabPageVM page);
+
+        public bool HighlightTabPage(string pageId);
 
         public bool CloseTabPage(TabPageVM page);
 

@@ -19,7 +19,7 @@ namespace WpfCustomApplication
         }
 
         private string _lastLoginTime;
-        public string LastLoginTime { get => _lastLoginTime; set => SetField(ref _lastLoginTime, value); }
+        public string LastLoginTime { get => _lastLoginTime; protected set => SetField(ref _lastLoginTime, value); }
 
         #region Commands
 

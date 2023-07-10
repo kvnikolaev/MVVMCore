@@ -7,8 +7,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
   <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
     
-    <UserControl Content="{Binding TabPager.View}"/>
+    <Menu Grid.Row="0">
+      <MenuItem Header="_Управление">
+        <MenuItem Header="_Диспетчер" Command="{Binding OpenTabManagerCommand}"/>
+        <MenuItem Header="_Открыть новую Start page" Command="{Binding OpenStartPageCommand}"/>
+      </MenuItem>
+    </Menu>
 
+    <UserControl Grid.Row="1" Content="{Binding TabPager.View}"/>
   </Grid>
 </UserControl>

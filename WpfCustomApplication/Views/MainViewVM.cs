@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVVMCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,37 @@ namespace WpfCustomApplication
             TabPager.AddTabPage(defaultPage);
             TabPager.AddTabPage(new DefaultPageVM(false));
         }
+
+        #region Menu
+        private RelayCommand _openStartPageCommand;
+        public RelayCommand OpenStartPageCommand => _openStartPageCommand ?? (_openStartPageCommand = new RelayCommand(OpenStartPageExecuted, OpenStartPageCanExecuted));
+        
+        private void OpenStartPageExecuted(object parameter)
+        {
+            var t = new DefaultPageVM();
+            TabPager.AddTabPage(t);
+            TabPager.ActivateTabPage(t);
+        }
+
+        private bool OpenStartPageCanExecuted(object parameter)
+        {
+            return true;
+        }
+
+        private RelayCommand _openTabManagerCommand;
+        public RelayCommand OpenTabManagerCommand => _openTabManagerCommand ?? (_openTabManagerCommand = new RelayCommand(OpenTabManagerExecuted, OpenTabManagerCanExecuted));
+
+        private void OpenTabManagerExecuted(object parameter)
+        {
+            if (!TabPager.ActivateTabPage(DispatcherVM.TabId))
+                TabPager.AddTabPage(new DispatcherVM());
+
+        }
+        private bool OpenTabManagerCanExecuted(object parameter)
+        {
+            return true;
+        }
+        #endregion
 
     }
 }
