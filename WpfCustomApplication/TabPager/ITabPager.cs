@@ -5,14 +5,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TempWpfElements;
 
 namespace WpfCustomApplication
 {
     internal interface ITabPager
     {
-        public bool AddTabPage(TabPageVM page);
-
-        public bool AddOrActivateTabPage(TabPageVM page);
+        public bool AddTabPage(TabPageVM page, string pageId);
 
         public bool ActivateTabPage(TabPageVM page);
 
@@ -26,6 +25,6 @@ namespace WpfCustomApplication
 
         public bool CloseTabPage(string pageId);
 
-        public ObservableCollection<TabPageVM> AllTabPages { get; }
+        public ObservablePairCollection<string, TabPageVM> AllTabPages { get; }
     }
 }

@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="450" Width="800"
-        Topmost="True">
+        Topmost="False">
   <Window.InputBindings>
     <KeyBinding Key="Q" Modifiers="Ctrl"
                 Command="{Binding QuitCommand}"/>

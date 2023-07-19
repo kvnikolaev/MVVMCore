@@ -9,23 +9,15 @@ namespace WpfCustomApplication
 {
     internal class DispatcherVM : TabPageVM
     {
-        static DispatcherVM()
-        {
-            TabId = "TabPagerDispatcher";
-        }
-
         public DispatcherVM()
         {
             this.View = new Dispatcher() { DataContext = this };
-
         }
 
         #region TabPageVM Implementation
 
         private string _title = "Диспетчер вкладок";
         public override string Title { get => _title; set => SetField(ref _title, value); }
-
-        public override string Id => "TabPagerDispatcher";
 
         public override object View { get; protected set; }
 

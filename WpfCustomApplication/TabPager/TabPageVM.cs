@@ -9,6 +9,11 @@ namespace WpfCustomApplication
 {
     internal abstract class TabPageVM : AbstractPageVM
     {
+        public TabPageVM(bool canClose = true)
+        {
+            this.CanClose = canClose;
+        }
+
         public abstract string Title { get; set; }
 
         public TabPagerVM TabPager { get; set; }
@@ -17,13 +22,6 @@ namespace WpfCustomApplication
         /// Possibility close in UI
         /// </summary>
         public bool CanClose { get; set; } = true;
-
-        public static string TabId { get; set; }
-
-        /// <summary>
-        /// Unique Id for orientation in UI
-        /// </summary>
-        public abstract string Id { get; }
 
         /// <summary>
         /// Visual notification in UI

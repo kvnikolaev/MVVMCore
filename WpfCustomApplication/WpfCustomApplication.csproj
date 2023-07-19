@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MVVMCore\MVVMCore.csproj" />
+    <ProjectReference Include="..\WpfElements\WpfElements.csproj" />
   </ItemGroup>
 
 </Project>

@@ -225,7 +225,7 @@
   </UserControl.Resources>
   <Grid>
     <TabControl x:Name="TabElement" TabStripPlacement="Left"
-                ItemsSource="{Binding AllTabPages}" 
+                ItemsSource="{Binding AllTabPages.Values}" 
                 SelectedItem="{Binding SelectedTab}"
                 ItemContainerStyle="{DynamicResource TabControlItemContainerStyle}">
       <!-- Заголовки -->

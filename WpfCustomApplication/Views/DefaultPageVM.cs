@@ -9,14 +9,10 @@ namespace WpfCustomApplication
 {
     internal class DefaultPageVM : TabPageVM
     {
-
         public DefaultPageVM(bool canClose = true)
         {
             this.CanClose = canClose;
             this.View = new DefaultPage();
-
-            _defaultPageCounter++;
-            _id = "default" + _defaultPageCounter;
         }
 
         private bool _blocked;
@@ -24,10 +20,6 @@ namespace WpfCustomApplication
 
         #region TabPageVM Implementation
 
-        private static int _defaultPageCounter = -1;
-
-        private string _id;
-        public override string Id { get => _id; }
         public override object View { get; protected set; }
         
         private string _title = "Start page";

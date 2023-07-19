@@ -19,14 +19,21 @@ namespace WpfCustomApplication
         {
             this.View = new MainView() { DataContext = this };
 
-            LoadTabPages();
+            LoadStartTabPages();
         }
 
-        private void LoadTabPages()
+        private void LoadStartTabPages()
         {
             DefaultPageVM defaultPage = new DefaultPageVM();
-            TabPager.AddTabPage(defaultPage);
-            TabPager.AddTabPage(new DefaultPageVM(false));
+            TabPager.AddTabPage(defaultPage, GetDefaultPageId());
+            TabPager.AddTabPage(new DefaultPageVM(false), GetDefaultPageId());
+        }
+
+        private static int _defaultPageCounter = -1;
+        private string GetDefaultPageId()
+        {
+            _defaultPageCounter++;
+            return "default" + _defaultPageCounter;
         }
 
         #region Menu
@@ -36,7 +43,7 @@ namespace WpfCustomApplication
         private void OpenStartPageExecuted(object parameter)
         {
             var t = new DefaultPageVM();
-            TabPager.AddTabPage(t);
+            TabPager.AddTabPage(t, GetDefaultPageId());
             TabPager.ActivateTabPage(t);
         }
 
@@ -45,19 +52,25 @@ namespace WpfCustomApplication
             return true;
         }
 
+        #region Открытие вкладки Диспетчера вкладок
         private RelayCommand _openTabManagerCommand;
         public RelayCommand OpenTabManagerCommand => _openTabManagerCommand ?? (_openTabManagerCommand = new RelayCommand(OpenTabManagerExecuted, OpenTabManagerCanExecuted));
 
+        private const string _tabDispatcherId = "TabPagerDispatcher";
         private void OpenTabManagerExecuted(object parameter)
         {
-            if (!TabPager.ActivateTabPage(DispatcherVM.TabId))
-                TabPager.AddTabPage(new DispatcherVM());
-
+            if (!TabPager.ActivateTabPage(_tabDispatcherId))
+            {
+                TabPager.AddTabPage(new DispatcherVM(), _tabDispatcherId);
+                TabPager.ActivateTabPage(_tabDispatcherId);
+            }
         }
         private bool OpenTabManagerCanExecuted(object parameter)
         {
             return true;
         }
+        #endregion
+
         #endregion
 
     }
