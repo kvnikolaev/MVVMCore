@@ -72,6 +72,7 @@ namespace WpfCustomApplication
                  return false;
             this.AllTabPages.Remove(tab);
             page.TabPager = null;
+            //!!page.Dispose
             return true;
         }
 

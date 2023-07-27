@@ -5,8 +5,55 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfCustomApplication"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="DispatcherControl">
+  <Grid>
     <Grid>
-            
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="auto"/>
+      </Grid.ColumnDefinitions>
+      <ListView BorderThickness="0" SelectionMode="Single" x:Name="ListSome"
+                Grid.Column="0"
+                ItemsSource="{Binding TabPager.AllTabPages}">
+        <ListView.Resources>
+          <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="ContextMenu">
+              <Setter.Value>
+                <ContextMenu>
+                  <MenuItem Header="Open Tab" Command="{Binding Path=DataContext.OpenTabCommand, Source={x:Reference DispatcherControl}}" CommandParameter="{Binding Value}"/>
+                  <MenuItem Header="Close Tab" Command="{Binding Path=DataContext.CloseTabCommand, Source={x:Reference DispatcherControl}}" CommandParameter="{Binding Value}"/>
+                </ContextMenu>
+              </Setter.Value>
+            </Setter>
+          </Style>
+        </ListView.Resources>
+        <ListView.View>
+          <GridView>
+            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Key}"/>
+            <GridViewColumn Header="Загаловок" DisplayMemberBinding="{Binding Value.Title}"/>
+            <GridViewColumn Header="Закреплено" Width="80">
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Value.CanClose}" TextAlignment="Center">
+
+                  </TextBlock>
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+
+          </GridView>
+        </ListView.View>
+      </ListView>
+      <DockPanel Grid.Column="1">
+        <TextBlock DockPanel.Dock="Top">
+          Всего вкладок:
+          <Run Text="{Binding TabPager.AllTabPages.Count, Mode=OneWay}"/>
+        </TextBlock>
+        <ListView  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding TabPager.AllTabPages.Keys}">
+        </ListView>
+      </DockPanel>
     </Grid>
+  </Grid>
 </UserControl>
