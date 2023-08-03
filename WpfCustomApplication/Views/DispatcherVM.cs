@@ -72,6 +72,22 @@ namespace WpfCustomApplication
             }
             return false;
         }
+
+        private RelayCommand _blockClosingCommand;
+        public RelayCommand BlockClosingCommand => _blockClosingCommand ?? (_blockClosingCommand = new RelayCommand(BlockClosingExecute, BlockClosingCanExecute));
+
+        private void BlockClosingExecute(object parameter)
+        {
+            if (parameter is TabPageVM tab)
+            {
+                tab.CanClose = !tab.CanClose;
+            }
+        }
+
+        private bool BlockClosingCanExecute(object parameter)
+        {
+            return true;
+        }
         #endregion
     }
 }

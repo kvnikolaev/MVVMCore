@@ -3,19 +3,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:WpfCustomApplication"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="DispatcherControl">
+  <UserControl.Resources>
+    <!--<DataTemplate x:Key="ListViewItemTemplate1">
+      <Grid Background="Red">
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="LeftDoubleClick">
+            <i:InvokeCommandAction Command="{Binding Path=DataContext.OpenTabCommand, Source={x:Reference DispatcherControl}}" CommandParameter="{Binding Value}"/>
+
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </Grid>
+    </DataTemplate>-->
+  </UserControl.Resources>
   <Grid>
     <Grid>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="auto"/>
       </Grid.ColumnDefinitions>
-      <ListView BorderThickness="0" SelectionMode="Single" x:Name="ListSome"
+      <ListView BorderThickness="0" SelectionMode="Extended" x:Name="ListSome"
                 Grid.Column="0"
                 ItemsSource="{Binding TabPager.AllTabPages}">
+        
         <ListView.Resources>
           <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -24,9 +38,15 @@
                 <ContextMenu>
                   <MenuItem Header="Open Tab" Command="{Binding Path=DataContext.OpenTabCommand, Source={x:Reference DispatcherControl}}" CommandParameter="{Binding Value}"/>
                   <MenuItem Header="Close Tab" Command="{Binding Path=DataContext.CloseTabCommand, Source={x:Reference DispatcherControl}}" CommandParameter="{Binding Value}"/>
+                  <Separator/>
+                  <MenuItem Header="Block/Unblock" Command="{Binding Path=DataContext.BlockClosingCommand, Source={x:Reference DispatcherControl}}" CommandParameter="{Binding Value}"/>
+                  <Separator/>
+                  <MenuItem Header="Alert tab"/>
                 </ContextMenu>
               </Setter.Value>
             </Setter>
+            <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
+            
           </Style>
         </ListView.Resources>
         <ListView.View>

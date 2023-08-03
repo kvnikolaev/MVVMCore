@@ -12,23 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TempWpfElements;
 
 namespace WpfCustomApplication
 {
     /// <summary>
-    /// Interaction logic for Dispatcher.xaml
+    /// Interaction logic for BubbleAnimation.xaml
     /// </summary>
-    public partial class Dispatcher : UserControl
+    public partial class BubbleAnimation : UserControl
     {
-        public Dispatcher()
+        public BubbleAnimation()
         {
             InitializeComponent();
-        }
-
-        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ((DispatcherVM)DataContext).OpenTabCommand.Execute((((ListViewItem)sender).Content as Pair<string, TabPageVM>).Value);
         }
     }
 }

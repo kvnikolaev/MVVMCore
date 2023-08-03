@@ -6,6 +6,7 @@
 6) в каком потоке запускается ContinueWith
 7) как работают кривые Безье и как из них сделать squircle
 8) ObservablePairCollection multi-thread access
+9) ListViewItem doubleClick
 
 TaskContainer:
 

@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
   <UserControl.Resources>
-    
-    
+
+
     <Style x:Key="FocusVisual">
       <Setter Property="Control.Template">
         <Setter.Value>
@@ -221,7 +221,7 @@
         </Setter.Value>
       </Setter>
     </Style>
-    
+
   </UserControl.Resources>
   <Grid>
     <TabControl x:Name="TabElement" TabStripPlacement="Left"
@@ -231,7 +231,7 @@
       <!-- Заголовки -->
       <TabControl.ItemTemplate>
         <DataTemplate>
-          <DockPanel LastChildFill="True" Width="125">
+          <DockPanel LastChildFill="True" Width="125" Margin="0,2">
             <Button Margin="5,0,0,0" Width="15" DockPanel.Dock="Right"
                     Visibility="{Binding CanClose, Converter={StaticResource BoolToHiddenConverter}}"
                     Command="{Binding CloseCommand}"/>
@@ -245,7 +245,7 @@
           <UserControl Content="{Binding View}"/>
         </DataTemplate>
       </TabControl.ContentTemplate>
-                
+
     </TabControl>
   </Grid>
 </UserControl>
