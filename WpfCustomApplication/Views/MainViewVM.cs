@@ -30,7 +30,7 @@ namespace WpfCustomApplication
             TabPager.AddTabPage(new DispatcherVM(), _tabDispatcherId);
             TabPager.ActivateTabPage(_tabDispatcherId);
             TabPager.AddTabPage(new BubbleAnimationVM(), "animation1");
-            TabPager.ActivateTabPage("animation1");
+            //TabPager.ActivateTabPage("animation1");
         }
 
         private static int _defaultPageCounter = -1;

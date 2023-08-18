@@ -9,16 +9,6 @@
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="DispatcherControl">
   <UserControl.Resources>
-    <!--<DataTemplate x:Key="ListViewItemTemplate1">
-      <Grid Background="Red">
-        <i:Interaction.Triggers>
-          <i:EventTrigger EventName="LeftDoubleClick">
-            <i:InvokeCommandAction Command="{Binding Path=DataContext.OpenTabCommand, Source={x:Reference DispatcherControl}}" CommandParameter="{Binding Value}"/>
-
-          </i:EventTrigger>
-        </i:Interaction.Triggers>
-      </Grid>
-    </DataTemplate>-->
   </UserControl.Resources>
   <Grid>
     <Grid>
@@ -29,7 +19,7 @@
       <ListView BorderThickness="0" SelectionMode="Extended" x:Name="ListSome"
                 Grid.Column="0"
                 ItemsSource="{Binding TabPager.AllTabPages}">
-        
+
         <ListView.Resources>
           <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -41,14 +31,20 @@
                   <Separator/>
                   <MenuItem Header="Block/Unblock" Command="{Binding Path=DataContext.BlockClosingCommand, Source={x:Reference DispatcherControl}}" CommandParameter="{Binding Value}"/>
                   <Separator/>
+                  <MenuItem Header="Up Tab in list"/>
+                  <MenuItem Header="Down Tab in list"/>
+                  <Separator/>
                   <MenuItem Header="Alert tab"/>
                 </ContextMenu>
               </Setter.Value>
             </Setter>
-            <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
-            
+            <Setter Property="local:ControlDoubleClick.Command"
+                    Value="{Binding Path=DataContext.OpenTabCommand, Source={x:Reference DispatcherControl}}"/>
+            <Setter Property="local:ControlDoubleClick.CommandParameter"
+                    Value="{Binding Value}"/>
           </Style>
         </ListView.Resources>
+
         <ListView.View>
           <GridView>
             <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Key}"/>
@@ -56,13 +52,20 @@
             <GridViewColumn Header="Закреплено" Width="80">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
-                  <TextBlock Text="{Binding Value.CanClose}" TextAlignment="Center">
-
+                  <TextBlock TextAlignment="Center" FontWeight="Bold">
+                    <TextBlock.Style>
+                      <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding Value.CanClose}" Value="False">
+                            <Setter Property="Text" Value="✓"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </TextBlock.Style>
                   </TextBlock>
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-
           </GridView>
         </ListView.View>
       </ListView>
@@ -71,7 +74,36 @@
           Всего вкладок:
           <Run Text="{Binding TabPager.AllTabPages.Count, Mode=OneWay}"/>
         </TextBlock>
-        <ListView  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding TabPager.AllTabPages.Keys}">
+        <!-- Collection keys editor -->
+        <ListView ItemsSource="{Binding KeysCollection}" Width="150" x:Name="keyList">
+          <ListView.Resources>
+            <Style TargetType="ListViewItem">
+              <Setter Property="local:ControlDoubleClick.Command"
+                      Value="{Binding Path=EditModeCommand}"/>
+            </Style>
+          </ListView.Resources>
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <Grid>
+                <TextBlock Text="{Binding Key}"/>
+                <TextBox x:Name="Editor" Visibility="Hidden"
+                         Text="{Binding ChangingKey, UpdateSourceTrigger=PropertyChanged}" 
+                         local:ControlLostFocus.Command="{Binding CancelEditingCommand}"
+                         local:ControlLostFocus.CommandParameter="{Binding }">
+                  <TextBox.InputBindings>
+                    <KeyBinding Key="Esc" Command="{Binding CancelEditingCommand}" CommandParameter="{Binding }"/>
+                    <KeyBinding Key="Return" Command="{Binding EnterEditingCommand}" CommandParameter="{Binding }"/>
+                  </TextBox.InputBindings>
+                </TextBox>
+              </Grid>
+              <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding EditionMode}" Value="True">
+                  <Setter TargetName="Editor" Property="Visibility" Value="Visible"/>
+                  <Setter TargetName="Editor" Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Self}}"/>
+                </DataTrigger>
+              </DataTemplate.Triggers>
+            </DataTemplate>
+          </ListView.ItemTemplate>
         </ListView>
       </DockPanel>
     </Grid>

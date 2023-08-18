@@ -71,14 +71,25 @@ namespace WpfCustomApplication
             if (tab == null) 
                  return false;
             this.AllTabPages.Remove(tab);
-            page.TabPager = null;
-            //!!page.Dispose
+            page.Dispose();
             return true;
         }
 
         public bool CloseTabPage(string pageId)
         {
             throw new NotImplementedException();
+        }
+
+        public bool EditTabKey(string oldKey, string newKey)
+        {
+            if (string.IsNullOrEmpty(newKey)) return false;
+            if (newKey == oldKey) return false;
+            if (AllTabPages.Keys.Contains(newKey)) return false;
+            var tab = this.AllTabPages.FirstOrDefault(x => x.Key == oldKey);
+            if (tab == null)
+                return false;
+            tab.Key = newKey;
+            return true;
         }
 
         #endregion

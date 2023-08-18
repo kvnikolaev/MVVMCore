@@ -25,6 +25,8 @@ namespace WpfCustomApplication
 
         public bool CloseTabPage(string pageId);
 
+        public bool EditTabKey(string oldKey, string newKey);
+
         public ObservablePairCollection<string, TabPageVM> AllTabPages { get; }
     }
 }
