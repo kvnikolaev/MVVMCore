@@ -1,37 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\check.png" />
-    <None Remove="Images\circle.png" />
-    <None Remove="Images\error.png" />
-    <None Remove="Images\onhold.png" />
-    <None Remove="Images\refresh.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TaskSchedulerWithPriority\TaskSchedulerWithPriority.csproj" />
-    <ProjectReference Include="..\WpfElements\WpfElements.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Images\check.png" />
-    <Resource Include="Images\circle.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\error.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\onhold.png" />
-    <Resource Include="Images\refresh.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
 </Project>

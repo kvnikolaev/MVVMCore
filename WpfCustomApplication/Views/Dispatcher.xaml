@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:WpfCustomApplication"
+             xmlns:elements="clr-namespace:WpfElements;assembly=WpfElements"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="DispatcherControl">
@@ -38,9 +39,9 @@
                 </ContextMenu>
               </Setter.Value>
             </Setter>
-            <Setter Property="local:ControlDoubleClick.Command"
+            <Setter Property="elements:ControlDoubleClick.Command"
                     Value="{Binding Path=DataContext.OpenTabCommand, Source={x:Reference DispatcherControl}}"/>
-            <Setter Property="local:ControlDoubleClick.CommandParameter"
+            <Setter Property="elements:ControlDoubleClick.CommandParameter"
                     Value="{Binding Value}"/>
           </Style>
         </ListView.Resources>
@@ -78,7 +79,7 @@
         <ListView ItemsSource="{Binding KeysCollection}" Width="150" x:Name="keyList">
           <ListView.Resources>
             <Style TargetType="ListViewItem">
-              <Setter Property="local:ControlDoubleClick.Command"
+              <Setter Property="elements:ControlDoubleClick.Command"
                       Value="{Binding Path=EditModeCommand}"/>
             </Style>
           </ListView.Resources>
@@ -88,8 +89,8 @@
                 <TextBlock Text="{Binding Key}"/>
                 <TextBox x:Name="Editor" Visibility="Hidden"
                          Text="{Binding ChangingKey, UpdateSourceTrigger=PropertyChanged}" 
-                         local:ControlLostFocus.Command="{Binding CancelEditingCommand}"
-                         local:ControlLostFocus.CommandParameter="{Binding }">
+                         elements:ControlLostFocus.Command="{Binding CancelEditingCommand}"
+                         elements:ControlLostFocus.CommandParameter="{Binding }">
                   <TextBox.InputBindings>
                     <KeyBinding Key="Esc" Command="{Binding CancelEditingCommand}" CommandParameter="{Binding }"/>
                     <KeyBinding Key="Return" Command="{Binding EnterEditingCommand}" CommandParameter="{Binding }"/>

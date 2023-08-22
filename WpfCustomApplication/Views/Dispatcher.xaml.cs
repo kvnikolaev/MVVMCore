@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TempWpfElements;
+using WpfElements;
 
 namespace WpfCustomApplication
 {
@@ -24,11 +24,6 @@ namespace WpfCustomApplication
         public Dispatcher()
         {
             InitializeComponent();
-        }
-
-        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ((DispatcherVM)DataContext).OpenTabCommand.Execute((((ListViewItem)sender).Content as Pair<string, TabPageVM>).Value);
         }
     }
 }

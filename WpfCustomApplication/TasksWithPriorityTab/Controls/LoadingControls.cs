@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TaskSchedulerWithPriority;
+using MVVMCore;
 
-namespace MVVMCore.Controls
+namespace WpfCustomApplication
 {
     public class LoadingControls : CoreVM, IEnumerable<LoadingControlVM>
     {
@@ -36,9 +37,10 @@ namespace MVVMCore.Controls
         {
             // создаем список таск
             this._loadingTasks.Clear();
-            foreach(var loading in _loadingList)
+            this._loadingList.ForEach(l => l.Status = LoadingStatus.Unknown);
+            OnPropertyChanged(nameof(DoneTasks));
+            foreach (var loading in _loadingList)
             {
-                loading.Status = LoadingStatus.Unknown;
                 var t = new TaskWithPriority(() => loading.Action(loading), lowPriority: true);
                 t.ContinueWith((task) => OnPropertyChanged(nameof(DoneTasks)));
                 _loadingTasks.Add(t);

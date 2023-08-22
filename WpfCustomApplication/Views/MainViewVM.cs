@@ -31,6 +31,8 @@ namespace WpfCustomApplication
             TabPager.ActivateTabPage(_tabDispatcherId);
             TabPager.AddTabPage(new BubbleAnimationVM(), "animation1");
             //TabPager.ActivateTabPage("animation1");
+            TabPager.AddTabPage(new TasksWithPriorityTabVM(), "TaskPriorityDemo");
+            TabPager.ActivateTabPage("TaskPriorityDemo");
         }
 
         private static int _defaultPageCounter = -1;

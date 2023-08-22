@@ -117,7 +117,7 @@ namespace WpfElements
 
             OnPropertyChanged(nameof(Count));
             _values?.Changed(pair.Value);
-            //!!_keys
+            _keys?.Changed(pair.Key);
         }
 
         public void Remove(TKey key)
@@ -139,7 +139,7 @@ namespace WpfElements
 
             OnPropertyChanged(nameof(Count));
             _values?.Changed(pair, index);
-            //!!_keys
+            _keys?.Changed(pair, index);
         }
 
         #endregion
@@ -152,6 +152,17 @@ namespace WpfElements
                 if (_values == null)
                     _values = new ObservablePairCollection<TKey, TValue>.PairCollectionValues(this);
                 return this._values;
+            }
+        }
+
+        private ObservablePairCollection<TKey, TValue>.PairCollectionKeys _keys;
+        public ObservablePairCollection<TKey, TValue>.PairCollectionKeys Keys
+        {
+            get
+            {
+                if (_keys == null)
+                    _keys = new ObservablePairCollection<TKey, TValue>.PairCollectionKeys(this);
+                return this._keys;
             }
         }
 
@@ -187,50 +198,129 @@ namespace WpfElements
             {
                 return GetEnumerator();
             }
+
+            private class Enumerator : IEnumerator<TValue>
+            {
+                private ObservablePairCollection<TKey, TValue> _dictionary;
+                private TValue _currentValue = default(TValue);
+                private int index = 0;
+                //!!private int version;
+
+                public Enumerator(ObservablePairCollection<TKey, TValue> dictionary)
+                {
+                    this._dictionary = dictionary;
+                    //this.version = dictionary.version;
+                }
+
+                public TValue Current => _currentValue;
+
+                object IEnumerator.Current => _currentValue;
+
+                public void Dispose()
+                {
+                }
+
+                public bool MoveNext()
+                {
+                    // this.version != _dictionary.Version
+                    //for (;this.index < this._dictionary.Count; this.index++)
+                    if (this.index < this._dictionary.Count)
+                    {
+                        this._currentValue = this._dictionary[this.index].Value;
+                        this.index++;
+                        return true;
+                    }
+                    this.index = this._dictionary.Count + 1;
+                    this._currentValue = default(TValue);
+                    return false;
+                }
+
+                public void Reset()
+                {
+                    //throw
+                    this.index = 0;
+                    this._currentValue = default(TValue);
+                }
+            }
         }
 
-        private class Enumerator : IEnumerator<TValue>
-        {
-            private ObservablePairCollection<TKey, TValue> _dictionary;
-            private TValue _currentValue = default(TValue);
-            private int index = 0;
-            //private int version;
+        #endregion
 
-            public Enumerator(ObservablePairCollection<TKey, TValue> dictionary)
+        #region Keys property realisation
+        public sealed class PairCollectionKeys : IEnumerable<TKey>, INotifyCollectionChanged
+        {
+            //interface INotifyCollectionChanged
+            public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+            private ObservablePairCollection<TKey, TValue> _dictionary;
+
+            public PairCollectionKeys(ObservablePairCollection<TKey, TValue> dictionary)
             {
                 this._dictionary = dictionary;
-                //this.version = dictionary.version;
             }
 
-            public TValue Current => _currentValue;
-
-            object IEnumerator.Current => _currentValue;
-
-            public void Dispose()
+            public void Changed(TKey key)
             {
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, key));
             }
 
-            public bool MoveNext()
+            public void Changed(Pair<TKey, TValue> pair, int index)
             {
-                //for (;this.index < this._dictionary.Count; this.index++)
-                if (this.index < this._dictionary.Count)
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, pair.Key, index));
+            }
+
+            public IEnumerator<TKey> GetEnumerator()
+            {
+                return new Enumerator(_dictionary);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            private struct Enumerator : IEnumerator<TKey>
+            {
+                private ObservablePairCollection<TKey, TValue> _dictionary;
+                private TKey _currentValue = default(TKey);
+                private int index = 0;
+                //!! private int version;
+
+                public Enumerator(ObservablePairCollection<TKey, TValue> dictionary)
                 {
-                    this._currentValue = this._dictionary[this.index].Value;
-                    this.index++;
-                    return true;
+                    this._dictionary = dictionary;
+                    //this.version = dictionary.varsion;
                 }
-                this.index = this._dictionary.Count + 1;
-                this._currentValue = default(TValue);
-                return false;
-            }
 
-            public void Reset()
-            {
-                //throw
-                this.index = 0;
-                this._currentValue = default(TValue);
+                public TKey Current => _currentValue;
+
+                object IEnumerator.Current => _currentValue;
+
+                public void Dispose()
+                {
+                }
+
+                public bool MoveNext()
+                {
+                    if (this.index < this._dictionary.Count)
+                    {
+                        this._currentValue = this._dictionary[this.index].Key;
+                        this.index++;
+                        return true;
+                    }
+                    this.index = this._dictionary.Count + 1;
+                    this._currentValue = default(TKey);
+                    return false;
+                }
+
+                public void Reset()
+                {
+                    this.index = 0;
+                    this._currentValue = default(TKey);
+                }
             }
         }
+
         #endregion
     }
 }

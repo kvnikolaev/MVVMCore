@@ -9,7 +9,17 @@
   <Application.Resources>
     <ResourceDictionary>
       <wpfElements:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>
+      <wpfElements:MultiBoolConverter x:Key="MultiBoolConverter"/>
+      <wpfElements:InvertBoolConverter x:Key="InvertBoolConverter"/>
+      <wpfElements:EnumEqualsParameterConverter x:Key="EnumEqualsParameterConverter"/>
 
+      <wpfElements:ControlDoubleClick x:Key="ControlDoubleClick"/>
+      <wpfElements:ControlLostFocus x:Key="ControlLostFocus"/>
+
+
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ResourceDictionary.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Application.Resources>
 </Application>

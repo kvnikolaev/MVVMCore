@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 using TaskSchedulerWithPriority;
+using MVVMCore;
 
-namespace MVVMCore
+namespace WpfCustomApplication
 {
     public class LoadingControlVM : CoreVM
     {

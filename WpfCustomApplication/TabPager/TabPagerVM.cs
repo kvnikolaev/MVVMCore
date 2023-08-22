@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using TempWpfElements;
+using WpfElements;
 
 namespace WpfCustomApplication
 {
