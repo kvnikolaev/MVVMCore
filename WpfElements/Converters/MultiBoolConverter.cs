@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace WpfElements
@@ -13,7 +14,14 @@ namespace WpfElements
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            if (values == null || !values.Any() || values.Any(b => b is not Boolean))
+                return DependencyProperty.UnsetValue;
+
+            if (parameter == null)
+                return DependencyProperty.UnsetValue;
+
             bool result = false;
+            
             switch (parameter.ToString())
             {
                 case "XOR":
@@ -29,7 +37,7 @@ namespace WpfElements
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }
